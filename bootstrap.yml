@@ -1,0 +1,8 @@
+---
+- hosts: student
+  name: This bootstraps the Ansible 101 workshop environment in EC2
+  gather_facts: false
+  become: true
+
+  roles:
+    - bootstrap

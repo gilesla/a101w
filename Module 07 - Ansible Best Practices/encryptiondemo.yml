@@ -1,0 +1,14 @@
+---
+- name: Encryption demo
+  hosts: localhost
+  gather_facts: false
+  become: true
+  vars_files:
+    - creds.yml
+
+  tasks:
+    - name: add a user
+      user:
+        name: '{{ user }}'
+        group: 'ec2-user'
+        password: "{{ passwd | password_hash('sha512') }}"

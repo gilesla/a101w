@@ -1,0 +1,13 @@
+---
+- hosts: web
+  become: true
+  tasks:
+    - name: ensure apache is NOT running
+      service:
+        name: httpd
+        state: stopped
+
+    - name: ensure apache is absent
+      yum:
+        name: httpd
+        state: absent

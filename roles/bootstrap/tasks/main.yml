@@ -1,0 +1,46 @@
+---
+# tasks file for bootstrap
+
+# TODO: launch EC2 instances (needs CLI arg)
+
+# TODO: copy templates/inventory ec2-user@$CONTROL_IP_ADDRESS:/home/ec2-user/
+
+- name: copy ssh config file
+  copy:
+    src: files/ssh_config
+    dest: /home/ec2-user/.ssh/config
+    owner: ec2-user
+    group: ec2-user
+    mode: 0600
+
+- name: copy setup.sh file
+  copy:
+    src: files/setup.sh
+    dest: /home/ec2-user/setup.sh
+    owner: ec2-user
+    group: ec2-user
+    mode: 0755
+
+- name: copy inventory file
+  copy:
+    src: files/inventory
+    dest: /home/ec2-user/inventory
+    owner: ec2-user
+    group: ec2-user
+    mode: 0755
+
+- name: install packages
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - tree
+    - gcc
+    - openssl-devel
+    - bzip2-devel
+    - libffi-devel
+
+- name: install Python3.7
+  script: files/pre-setup.sh
+  args:
+    creates: /home/ec2-user/bootstrapped.txt

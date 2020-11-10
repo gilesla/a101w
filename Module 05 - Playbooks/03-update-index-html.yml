@@ -1,0 +1,23 @@
+---
+- hosts: web
+  vars:
+    my_hostname: "{{ ansible_nodename }}"
+  become: true
+  tasks:
+    - name: install the latest version of Apache
+      yum:
+        name: httpd
+        state: latest
+
+    - name: write the index.html file
+      template:
+        src: templates/03-index.html.j2
+        dest: /var/www/html/index.html
+
+    - name: ensure apache is running
+      service:
+        name: httpd
+        state: started
+
+    - debug:
+        var: my_hostname
